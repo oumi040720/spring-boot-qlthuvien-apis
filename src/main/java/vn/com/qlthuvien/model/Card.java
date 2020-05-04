@@ -4,9 +4,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,6 +32,9 @@ public class Card {
 	@Column(name = "Status")
 	private boolean status;
 
+	@OneToOne(mappedBy = "card", fetch = FetchType.LAZY)
+	private Reader reader;
+	
 	public Long getCardID() {
 		return cardID;
 	}

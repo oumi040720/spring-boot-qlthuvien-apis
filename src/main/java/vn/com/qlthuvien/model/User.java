@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,6 +31,9 @@ public class User {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private Role role;
 
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+	private Librarian librarian;
+	
 	public String getUsername() {
 		return username;
 	}
