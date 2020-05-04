@@ -1,10 +1,14 @@
 package vn.com.qlthuvien.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -30,10 +34,13 @@ public class Publisher {
 
 	@Column(name = "Logo")
 	private String logo;
-	
+
 	@Column(name = "Status")
 	private Boolean status;
-	
+
+	@OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY)
+	private List<Book> books;
+
 	public Long getPublisherID() {
 		return publisherID;
 	}
@@ -88,6 +95,14 @@ public class Publisher {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public List<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(List<Book> books) {
+		this.books = books;
 	}
 
 }
