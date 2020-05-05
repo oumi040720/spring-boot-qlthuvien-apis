@@ -1,5 +1,7 @@
 package vn.com.qlthuvien.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -47,6 +50,9 @@ public class Librarian {
 	@JoinColumn(name = "Username")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private User user;
+
+	@OneToMany(mappedBy = "librarian", fetch = FetchType.LAZY)
+	private List<Bill> bills;
 
 	public Long getLibrarianID() {
 		return librarianID;
@@ -118,6 +124,14 @@ public class Librarian {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<Bill> getBills() {
+		return bills;
+	}
+
+	public void setBills(List<Bill> bills) {
+		this.bills = bills;
 	}
 
 }

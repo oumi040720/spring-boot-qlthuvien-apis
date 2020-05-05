@@ -56,6 +56,9 @@ public class Book {
 
 	@OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
 	private List<BookCategory> bookCategories;
+	
+	@OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+	private List<BillDetail> billDetails;
 
 	public Long getBookID() {
 		return bookID;

@@ -1,6 +1,7 @@
 package vn.com.qlthuvien.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,7 +36,10 @@ public class Card {
 
 	@OneToOne(mappedBy = "card", fetch = FetchType.LAZY)
 	private Reader reader;
-	
+
+	@OneToMany(mappedBy = "card", fetch = FetchType.LAZY)
+	private List<Bill> bills;
+
 	public Long getCardID() {
 		return cardID;
 	}
@@ -57,6 +62,22 @@ public class Card {
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+
+	public Reader getReader() {
+		return reader;
+	}
+
+	public void setReader(Reader reader) {
+		this.reader = reader;
+	}
+
+	public List<Bill> getBills() {
+		return bills;
+	}
+
+	public void setBills(List<Bill> bills) {
+		this.bills = bills;
 	}
 
 }
