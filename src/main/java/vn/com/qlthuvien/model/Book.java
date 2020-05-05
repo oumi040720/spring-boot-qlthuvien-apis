@@ -1,5 +1,7 @@
 package vn.com.qlthuvien.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -47,6 +50,9 @@ public class Book {
 	@JoinColumn(name = "PublisherID")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private Publisher publisher;
+
+	@OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+	private List<BookAuthor> bookAuthors;
 
 	public Long getBookID() {
 		return bookID;
@@ -119,5 +125,13 @@ public class Book {
 	public void setPublisher(Publisher publisher) {
 		this.publisher = publisher;
 	}
-	
+
+	public List<BookAuthor> getBookAuthors() {
+		return bookAuthors;
+	}
+
+	public void setBookAuthors(List<BookAuthor> bookAuthors) {
+		this.bookAuthors = bookAuthors;
+	}
+
 }

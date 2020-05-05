@@ -1,10 +1,14 @@
 package vn.com.qlthuvien.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -24,6 +28,9 @@ public class Author {
 
 	@Column(name = "Status")
 	private Boolean status;
+
+	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+	private List<BookAuthor> bookAuthors;
 
 	public Long getAuthorID() {
 		return authorID;
@@ -55,6 +62,14 @@ public class Author {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public List<BookAuthor> getBookAuthors() {
+		return bookAuthors;
+	}
+
+	public void setBookAuthors(List<BookAuthor> bookAuthors) {
+		this.bookAuthors = bookAuthors;
 	}
 
 }
