@@ -1,10 +1,14 @@
 package vn.com.qlthuvien.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +25,9 @@ public class Category {
 
 	@Column(name = "CategoryCode")
 	private String categoryCode;
+
+	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+	private List<BookCategory> bookCategories;
 
 	public Long getCategoryID() {
 		return categoryID;
@@ -44,6 +51,14 @@ public class Category {
 
 	public void setCategoryCode(String categoryCode) {
 		this.categoryCode = categoryCode;
+	}
+
+	public List<BookCategory> getBookCategories() {
+		return bookCategories;
+	}
+
+	public void setBookCategories(List<BookCategory> bookCategories) {
+		this.bookCategories = bookCategories;
 	}
 
 }

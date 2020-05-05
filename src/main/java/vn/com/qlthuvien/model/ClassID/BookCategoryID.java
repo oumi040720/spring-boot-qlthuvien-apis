@@ -2,40 +2,42 @@ package vn.com.qlthuvien.model.ClassID;
 
 import java.io.Serializable;
 
-import vn.com.qlthuvien.model.Book;
-import vn.com.qlthuvien.model.Category;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
+@Embeddable
 public class BookCategoryID implements Serializable {
 
 	private static final long serialVersionUID = -4491880486335193840L;
 
-	private Book book;
+	@Column(name = "BookID")
+	private Long bookID;
 
-	private Category category;
+	@Column(name = "CategoryID")
+	private Long categoryID;
 
 	public BookCategoryID() {
 	}
 
-	public BookCategoryID(Book book, Category category) {
-		super();
-		this.book = book;
-		this.category = category;
+	public BookCategoryID(Long bookID, Long categoryID) {
+		this.bookID = bookID;
+		this.categoryID = categoryID;
 	}
 
-	public Book getBook() {
-		return book;
+	public Long getBookID() {
+		return bookID;
 	}
 
-	public void setBook(Book book) {
-		this.book = book;
+	public void setBookID(Long bookID) {
+		this.bookID = bookID;
 	}
 
-	public Category getCategory() {
-		return category;
+	public Long getCategoryID() {
+		return categoryID;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryID(Long categoryID) {
+		this.categoryID = categoryID;
 	}
 
 	public static long getSerialversionuid() {
@@ -46,8 +48,8 @@ public class BookCategoryID implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((book == null) ? 0 : book.hashCode());
-		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((bookID == null) ? 0 : bookID.hashCode());
+		result = prime * result + ((categoryID == null) ? 0 : categoryID.hashCode());
 		return result;
 	}
 
@@ -60,15 +62,15 @@ public class BookCategoryID implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		BookCategoryID other = (BookCategoryID) obj;
-		if (book == null) {
-			if (other.book != null)
+		if (bookID == null) {
+			if (other.bookID != null)
 				return false;
-		} else if (!book.equals(other.book))
+		} else if (!bookID.equals(other.bookID))
 			return false;
-		if (category == null) {
-			if (other.category != null)
+		if (categoryID == null) {
+			if (other.categoryID != null)
 				return false;
-		} else if (!category.equals(other.category))
+		} else if (!categoryID.equals(other.categoryID))
 			return false;
 		return true;
 	}

@@ -54,6 +54,9 @@ public class Book {
 	@OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
 	private List<BookAuthor> bookAuthors;
 
+	@OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+	private List<BookCategory> bookCategories;
+
 	public Long getBookID() {
 		return bookID;
 	}
@@ -132,6 +135,14 @@ public class Book {
 
 	public void setBookAuthors(List<BookAuthor> bookAuthors) {
 		this.bookAuthors = bookAuthors;
+	}
+
+	public List<BookCategory> getBookCategories() {
+		return bookCategories;
+	}
+
+	public void setBookCategories(List<BookCategory> bookCategories) {
+		this.bookCategories = bookCategories;
 	}
 
 }
