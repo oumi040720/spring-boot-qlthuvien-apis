@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,14 @@ public class UserAPI {
 	@GetMapping(value = "/api/user")
 	public List<User> getAll() {
 		return userRepository.findAll();
+	}
+	
+	@GetMapping(value = "/api/user/page/{page}")
+	public Page<User> getAll(@PathVariable("page") Integer page) {
+		page -= 1;
+		
+		Page<User> result = userRepository.findAll(PageRequest.of(page, 10));
+		return result;
 	}
 	
 	@GetMapping(value = "/api/user/{username}")

@@ -21,6 +21,7 @@ public class User {
 	private String username;
 
 	@Column(name = "Password")
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 
 	@Column(name = "Status")
