@@ -36,8 +36,13 @@ public class CategoryAPI {
 		return categoryRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/category/search/{key}")
+	public List<Category> search(@PathVariable("key") String key) {
+		return categoryRepository.findAllByCategoryNameContainingOrCategoryCodeContaining(key, key);
+	}
+	
 	@GetMapping(value = "/api/category/{categoryID}")
-	public ResponseEntity<Optional<Category>> getRoleByRoleID(@PathVariable("categoryID") Long categoryID) {
+	public ResponseEntity<Optional<Category>> getByID(@PathVariable("categoryID") Long categoryID) {
 		return ResponseEntity.ok(categoryRepository.findById(categoryID));
 	}
 	

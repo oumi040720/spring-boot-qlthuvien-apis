@@ -36,8 +36,13 @@ public class PublisherAPI {
 		return publisherRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/publisher/search/{key}")
+	public List<Publisher> search(@PathVariable("key") String key) {
+		return publisherRepository.findAllByPublisherNameContainingOrAddressContainingOrEmailContaining(key, key, key);
+	}
+	
 	@GetMapping(value = "/api/publisher/{publisherID}")
-	public ResponseEntity<Optional<Publisher>> getRoleByRoleID(@PathVariable("publisherID") Long publisherID) {
+	public ResponseEntity<Optional<Publisher>> getByID(@PathVariable("publisherID") Long publisherID) {
 		return ResponseEntity.ok(publisherRepository.findById(publisherID));
 	}
 	

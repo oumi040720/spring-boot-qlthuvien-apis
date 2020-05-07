@@ -37,7 +37,7 @@ public class BillAPI {
 	}
 	
 	@GetMapping(value = "/api/bill/{billID}")
-	public ResponseEntity<Optional<Bill>> getRoleByRoleID(@PathVariable("billID") Long billID) {
+	public ResponseEntity<Optional<Bill>> getByID(@PathVariable("billID") Long billID) {
 		return ResponseEntity.ok(billRepository.findById(billID));
 	}
 	

@@ -36,8 +36,13 @@ public class LibrarianAPI {
 		return librarianRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/librarian/search/{key}")
+	public List<Librarian> search(@PathVariable("key") String key) {
+		return librarianRepository.findAllByFullnameContainingOrEmailContaining(key, key);
+	}
+	
 	@GetMapping(value = "/api/librarian/{librarianID}")
-	public ResponseEntity<Optional<Librarian>> getRoleByRoleID(@PathVariable("librarianID") Long librarianID) {
+	public ResponseEntity<Optional<Librarian>> getByID(@PathVariable("librarianID") Long librarianID) {
 		return ResponseEntity.ok(librarianRepository.findById(librarianID));
 	}
 	

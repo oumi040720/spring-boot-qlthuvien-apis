@@ -36,8 +36,13 @@ public class ReaderAPI {
 		return readerRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/reader/search/{key}")
+	public List<Reader> search(@PathVariable("key") String key) {
+		return readerRepository.findAllByReaderFullnameContainingOrAddressContainingOrEmailContaining(key, key, key);
+	}
+	
 	@GetMapping(value = "/api/reader/{readerID}")
-	public ResponseEntity<Optional<Reader>> getRoleByRoleID(@PathVariable("readerID") Long readerID) {
+	public ResponseEntity<Optional<Reader>> getByID(@PathVariable("readerID") Long readerID) {
 		return ResponseEntity.ok(readerRepository.findById(readerID));
 	}
 	

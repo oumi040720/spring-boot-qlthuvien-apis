@@ -37,8 +37,13 @@ public class UserAPI {
 		return result;
 	}
 	
+	@GetMapping(value = "/api/user/search/{key}")
+	public List<User> search(@PathVariable("key") String key) {
+		return userRepository.findAllByUsernameContaining(key);
+	}
+	
 	@GetMapping(value = "/api/user/{username}")
-	public ResponseEntity<Optional<User>> getRoleByRoleID(@PathVariable("username") String username) {
+	public ResponseEntity<Optional<User>> getByID(@PathVariable("username") String username) {
 		return ResponseEntity.ok(userRepository.findById(username));
 	}
 	

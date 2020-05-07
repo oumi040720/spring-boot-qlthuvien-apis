@@ -37,7 +37,7 @@ public class CardAPI {
 	}
 	
 	@GetMapping(value = "/api/card/{cardID}")
-	public ResponseEntity<Optional<Card>> getRoleByRoleID(@PathVariable("cardID") Long cardID) {
+	public ResponseEntity<Optional<Card>> getByID(@PathVariable("cardID") Long cardID) {
 		return ResponseEntity.ok(cardRepository.findById(cardID));
 	}
 	

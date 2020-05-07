@@ -38,7 +38,7 @@ public class BookAuthorAPI {
 	}
 	
 	@GetMapping(value = "/api/book_author/{bookID}/{authorID}")
-	public ResponseEntity<Optional<BookAuthor>> getRoleByRoleID(@PathVariable("bookID") Long bookID, @PathVariable("authorID") Long authorID) {
+	public ResponseEntity<Optional<BookAuthor>> getByID(@PathVariable("bookID") Long bookID, @PathVariable("authorID") Long authorID) {
 		BookAuthorID id = new BookAuthorID(bookID, authorID);
 		
 		return ResponseEntity.ok(bookAuthorRepository.findById(id));

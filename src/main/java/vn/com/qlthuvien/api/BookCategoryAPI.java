@@ -38,7 +38,7 @@ public class BookCategoryAPI {
 	}
 	
 	@GetMapping(value = "/api/book_category/{bookID}/{categoryID}")
-	public ResponseEntity<Optional<BookCategory>> getRoleByRoleID(@PathVariable("bookID") Long bookID, @PathVariable("categoryID") Long categoryID) {
+	public ResponseEntity<Optional<BookCategory>> getByID(@PathVariable("bookID") Long bookID, @PathVariable("categoryID") Long categoryID) {
 		BookCategoryID id = new BookCategoryID(bookID, categoryID);
 		
 		return ResponseEntity.ok(bookCategoryRepository.findById(id));

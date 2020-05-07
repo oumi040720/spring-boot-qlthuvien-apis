@@ -32,12 +32,16 @@ public class AuthorAPI {
 	@GetMapping(value = "/api/author/page/{page}")
 	public Page<Author> getAll(@PathVariable("page") Integer page) {
 		page -= 1;
-		
 		return authorRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/author/search/{key}")
+	public List<Author> search(@PathVariable("key") String key) {
+		return authorRepository.findAllByAuthorNameContaining(key);
+	}
+	
 	@GetMapping(value = "/api/author/{authorID}")
-	public ResponseEntity<Optional<Author>> getRoleByRoleID(@PathVariable("authorID") Long authorID) {
+	public ResponseEntity<Optional<Author>> getByID(@PathVariable("authorID") Long authorID) {
 		return ResponseEntity.ok(authorRepository.findById(authorID));
 	}
 	

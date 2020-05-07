@@ -28,7 +28,7 @@ public class RoleAPI {
 	}
 	
 	@GetMapping(value = "/api/role/{roleID}")
-	public ResponseEntity<Optional<Role>> getRoleByRoleID(@PathVariable("roleID") Long roleID) {
+	public ResponseEntity<Optional<Role>> getByID(@PathVariable("roleID") Long roleID) {
 		return ResponseEntity.ok(roleRepository.findById(roleID));
 	}
 	

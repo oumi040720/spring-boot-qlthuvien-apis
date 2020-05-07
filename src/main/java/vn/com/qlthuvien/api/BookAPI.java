@@ -36,8 +36,13 @@ public class BookAPI {
 		return bookRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/book/search/{key}")
+	public List<Book> search(@PathVariable("key") String key) {
+		return bookRepository.findAllByBookNameContainingOrBookSubjectContaining(key, key);
+	}
+	
 	@GetMapping(value = "/api/book/{bookID}")
-	public ResponseEntity<Optional<Book>> getRoleByRoleID(@PathVariable("bookID") Long bookID) {
+	public ResponseEntity<Optional<Book>> getByID(@PathVariable("bookID") Long bookID) {
 		return ResponseEntity.ok(bookRepository.findById(bookID));
 	}
 	
