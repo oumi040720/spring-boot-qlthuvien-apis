@@ -29,6 +29,11 @@ public class AuthorAPI {
 		return authorRepository.findAll();
 	}
 	
+	@GetMapping(value = "/api/author/search/{key}")
+	public List<Author> search(@PathVariable("key") String key) {
+		return authorRepository.findAllByAuthorNameContaining(key);
+	}
+	
 	@GetMapping(value = "/api/author/page/{page}")
 	public Page<Author> getAll(@PathVariable("page") Integer page) {
 		page -= 1;
@@ -41,9 +46,10 @@ public class AuthorAPI {
 		return authorRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
 	}
 	
-	@GetMapping(value = "/api/author/search/{key}")
-	public List<Author> search(@PathVariable("key") String key) {
-		return authorRepository.findAllByAuthorNameContaining(key);
+	@GetMapping(value = "/api/author/page/{page}/search/{key}")
+	public Page<Author> search(@PathVariable("page") Integer page, @PathVariable("key") String key) {
+		page -= 1;
+		return authorRepository.findAllByAuthorNameContaining(key, PageRequest.of(page, 10));
 	}
 	
 	@GetMapping(value = "/api/author/{authorID}")

@@ -16,4 +16,6 @@ public interface LibrarianRepository extends JpaRepository<Librarian, Long> {
 	
 	public List<Librarian> findAllByFullnameContainingOrEmailContaining(String fullname, String email);
 	
+	public Page<Librarian> findAllByFullnameContainingOrEmailContaining(String fullname, String email, Pageable pageable);
+	
 }

@@ -29,6 +29,11 @@ public class LibrarianAPI {
 		return librarianRepository.findAll();
 	}
 	
+	@GetMapping(value = "/api/librarian/search/{key}")
+	public List<Librarian> search(@PathVariable("key") String key) {
+		return librarianRepository.findAllByFullnameContainingOrEmailContaining(key, key);
+	}
+	
 	@GetMapping(value = "/api/librarian/page/{page}")
 	public Page<Librarian> getAll(@PathVariable("page") Integer page) {
 		page -= 1;
@@ -43,9 +48,11 @@ public class LibrarianAPI {
 		return librarianRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
 	}
 	
-	@GetMapping(value = "/api/librarian/search/{key}")
-	public List<Librarian> search(@PathVariable("key") String key) {
-		return librarianRepository.findAllByFullnameContainingOrEmailContaining(key, key);
+	@GetMapping(value = "/api/librarian/page/{page}/search/{key}")
+	public Page<Librarian> search(@PathVariable("page") Integer page, @PathVariable("key") String key) {
+		page -= 1;
+		
+		return librarianRepository.findAllByFullnameContainingOrEmailContaining(key, key, PageRequest.of(page, 10));
 	}
 	
 	@GetMapping(value = "/api/librarian/{librarianID}")

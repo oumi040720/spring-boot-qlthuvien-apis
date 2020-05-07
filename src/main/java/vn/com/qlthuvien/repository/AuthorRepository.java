@@ -16,4 +16,6 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
 	
 	public List<Author> findAllByAuthorNameContaining(String authorName);
 	
+	public Page<Author> findAllByAuthorNameContaining(String authorName, Pageable pageable);
+	
 }

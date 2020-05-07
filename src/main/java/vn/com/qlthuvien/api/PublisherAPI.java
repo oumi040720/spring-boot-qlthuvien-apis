@@ -29,6 +29,11 @@ public class PublisherAPI {
 		return publisherRepository.findAll();
 	}
 	
+	@GetMapping(value = "/api/publisher/search/{key}")
+	public List<Publisher> search(@PathVariable("key") String key) {
+		return publisherRepository.findAllByPublisherNameContainingOrAddressContainingOrEmailContaining(key, key, key);
+	}
+	
 	@GetMapping(value = "/api/publisher/page/{page}")
 	public Page<Publisher> getAll(@PathVariable("page") Integer page) {
 		page -= 1;
@@ -43,9 +48,11 @@ public class PublisherAPI {
 		return publisherRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
 	}
 	
-	@GetMapping(value = "/api/publisher/search/{key}")
-	public List<Publisher> search(@PathVariable("key") String key) {
-		return publisherRepository.findAllByPublisherNameContainingOrAddressContainingOrEmailContaining(key, key, key);
+	@GetMapping(value = "/api/publisher/page/{page}/search/{key}")
+	public Page<Publisher> search(@PathVariable("page") Integer page, @PathVariable("key") String key) {
+		page -= 1;
+		
+		return publisherRepository.findAllByPublisherNameContainingOrAddressContainingOrEmailContaining(key, key, key, PageRequest.of(page, 10));
 	}
 	
 	@GetMapping(value = "/api/publisher/{publisherID}")

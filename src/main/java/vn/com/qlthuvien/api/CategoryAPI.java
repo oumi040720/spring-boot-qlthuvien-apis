@@ -29,6 +29,11 @@ public class CategoryAPI {
 		return categoryRepository.findAll();
 	}
 	
+	@GetMapping(value = "/api/category/search/{key}")
+	public List<Category> search(@PathVariable("key") String key) {
+		return categoryRepository.findAllByCategoryNameContainingOrCategoryCodeContaining(key, key);
+	}
+	
 	@GetMapping(value = "/api/category/page/{page}")
 	public Page<Category> getAll(@PathVariable("page") Integer page) {
 		page -= 1; 
@@ -36,10 +41,13 @@ public class CategoryAPI {
 		return categoryRepository.findAll(PageRequest.of(page, 10));
 	}
 	
-	@GetMapping(value = "/api/category/search/{key}")
-	public List<Category> search(@PathVariable("key") String key) {
-		return categoryRepository.findAllByCategoryNameContainingOrCategoryCodeContaining(key, key);
+	@GetMapping(value = "/api/category/page/{page}/search/{key}")
+	public Page<Category> search(@PathVariable("page") Integer page, @PathVariable("key") String key) {
+		page -= 1; 
+		
+		return categoryRepository.findAllByCategoryNameContainingOrCategoryCodeContaining(key, key, PageRequest.of(page, 10));
 	}
+	
 	
 	@GetMapping(value = "/api/category/{categoryID}")
 	public ResponseEntity<Optional<Category>> getByID(@PathVariable("categoryID") Long categoryID) {

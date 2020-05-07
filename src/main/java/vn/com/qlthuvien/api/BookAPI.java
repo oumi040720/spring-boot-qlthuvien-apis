@@ -29,6 +29,11 @@ public class BookAPI {
 		return bookRepository.findAll();
 	}
 	
+	@GetMapping(value = "/api/book/search/{key}")
+	public List<Book> search(@PathVariable("key") String key) {
+		return bookRepository.findAllByBookNameContainingOrBookSubjectContaining(key, key);
+	}
+	
 	@GetMapping(value = "/api/book/page/{page}")
 	public Page<Book> getAll(@PathVariable("page") Integer page) {
 		page -= 1;
@@ -43,11 +48,13 @@ public class BookAPI {
 		return bookRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
 	}
 	
-	@GetMapping(value = "/api/book/search/{key}")
-	public List<Book> search(@PathVariable("key") String key) {
-		return bookRepository.findAllByBookNameContainingOrBookSubjectContaining(key, key);
+	@GetMapping(value = "/api/book/page/{page}/search/{key}")
+	public Page<Book> search(@PathVariable("page") Integer page, @PathVariable("key") String key) {
+		page -= 1;
+		
+		return bookRepository.findAllByBookNameContainingOrBookSubjectContaining(key, key, PageRequest.of(page, 10));
 	}
-	
+		
 	@GetMapping(value = "/api/book/{bookID}")
 	public ResponseEntity<Optional<Book>> getByID(@PathVariable("bookID") Long bookID) {
 		return ResponseEntity.ok(bookRepository.findById(bookID));

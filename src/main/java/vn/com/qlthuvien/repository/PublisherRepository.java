@@ -16,4 +16,6 @@ public interface PublisherRepository extends JpaRepository<Publisher, Long> {
 	
 	public List<Publisher> findAllByPublisherNameContainingOrAddressContainingOrEmailContaining(String publisherName, String address, String email);
 	
+	public Page<Publisher> findAllByPublisherNameContainingOrAddressContainingOrEmailContaining(String publisherName, String address, String email, Pageable pageable);
+	
 }

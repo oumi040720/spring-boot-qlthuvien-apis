@@ -16,4 +16,6 @@ public interface ReaderRepository extends JpaRepository<Reader, Long> {
 	
 	public List<Reader> findAllByReaderFullnameContainingOrAddressContainingOrEmailContaining(String readerFullname, String address, String email);
 	
+	public Page<Reader> findAllByReaderFullnameContainingOrAddressContainingOrEmailContaining(String readerFullname, String address, String email, Pageable pageable);
+	
 }

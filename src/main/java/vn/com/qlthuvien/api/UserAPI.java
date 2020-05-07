@@ -29,25 +29,30 @@ public class UserAPI {
 		return userRepository.findAll();
 	}
 	
+	@GetMapping(value = "/api/user/search/{key}")
+	public List<User> search(@PathVariable("key") String key) {
+		return userRepository.findAllByUsernameContaining(key);
+	}
+	
 	@GetMapping(value = "/api/user/page/{page}")
 	public Page<User> getAll(@PathVariable("page") Integer page) {
 		page -= 1;
 		
-		Page<User> result = userRepository.findAll(PageRequest.of(page, 10));
-		return result;
+		return userRepository.findAll(PageRequest.of(page, 10));
 	}
 	
 	@GetMapping(value = "/api/user/page/{page}/status/{status}")
 	public Page<User> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
 		page -= 1;
 		
-		Page<User> result = userRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
-		return result;
+		return userRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
 	}
 	
-	@GetMapping(value = "/api/user/search/{key}")
-	public List<User> search(@PathVariable("key") String key) {
-		return userRepository.findAllByUsernameContaining(key);
+	@GetMapping(value = "/api/user/page/{page}/search/{key}")
+	public Page<User> search(@PathVariable("page") Integer page, @PathVariable("key") String key) {
+		page -= 1;
+		
+		return userRepository.findAllByUsernameContaining(key, PageRequest.of(page, 10));
 	}
 	
 	@GetMapping(value = "/api/user/{username}")
