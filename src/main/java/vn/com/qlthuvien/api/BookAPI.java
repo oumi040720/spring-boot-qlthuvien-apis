@@ -36,6 +36,13 @@ public class BookAPI {
 		return bookRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/book/page/{page}/status/{status}")
+	public Page<Book> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
+		page -= 1;
+		
+		return bookRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
+	}
+	
 	@GetMapping(value = "/api/book/search/{key}")
 	public List<Book> search(@PathVariable("key") String key) {
 		return bookRepository.findAllByBookNameContainingOrBookSubjectContaining(key, key);

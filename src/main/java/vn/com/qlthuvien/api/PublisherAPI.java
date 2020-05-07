@@ -36,6 +36,13 @@ public class PublisherAPI {
 		return publisherRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/publisher/page/{page}/status/{status}")
+	public Page<Publisher> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
+		page -= 1;
+		
+		return publisherRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
+	}
+	
 	@GetMapping(value = "/api/publisher/search/{key}")
 	public List<Publisher> search(@PathVariable("key") String key) {
 		return publisherRepository.findAllByPublisherNameContainingOrAddressContainingOrEmailContaining(key, key, key);

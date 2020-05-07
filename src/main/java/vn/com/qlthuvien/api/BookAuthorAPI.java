@@ -37,6 +37,13 @@ public class BookAuthorAPI {
 		return bookAuthorRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/book_author/page/{page}/status/{status}")
+	public Page<BookAuthor> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
+		page -= 1;
+		
+		return bookAuthorRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
+	}
+	
 	@GetMapping(value = "/api/book_author/{bookID}/{authorID}")
 	public ResponseEntity<Optional<BookAuthor>> getByID(@PathVariable("bookID") Long bookID, @PathVariable("authorID") Long authorID) {
 		BookAuthorID id = new BookAuthorID(bookID, authorID);

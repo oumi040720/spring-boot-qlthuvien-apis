@@ -37,6 +37,13 @@ public class BookCategoryAPI {
 		return bookCategoryRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/book_category/page/{page}/status/{status}")
+	public Page<BookCategory> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
+		page -= 1;
+		
+		return bookCategoryRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
+	}
+	
 	@GetMapping(value = "/api/book_category/{bookID}/{categoryID}")
 	public ResponseEntity<Optional<BookCategory>> getByID(@PathVariable("bookID") Long bookID, @PathVariable("categoryID") Long categoryID) {
 		BookCategoryID id = new BookCategoryID(bookID, categoryID);

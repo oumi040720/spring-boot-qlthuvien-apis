@@ -37,6 +37,14 @@ public class UserAPI {
 		return result;
 	}
 	
+	@GetMapping(value = "/api/user/page/{page}/status/{status}")
+	public Page<User> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
+		page -= 1;
+		
+		Page<User> result = userRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
+		return result;
+	}
+	
 	@GetMapping(value = "/api/user/search/{key}")
 	public List<User> search(@PathVariable("key") String key) {
 		return userRepository.findAllByUsernameContaining(key);

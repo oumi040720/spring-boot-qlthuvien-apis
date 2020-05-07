@@ -35,6 +35,12 @@ public class AuthorAPI {
 		return authorRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/author/page/{page}/status/{status}")
+	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
+		page -= 1;
+		return authorRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
+	}
+	
 	@GetMapping(value = "/api/author/search/{key}")
 	public List<Author> search(@PathVariable("key") String key) {
 		return authorRepository.findAllByAuthorNameContaining(key);

@@ -36,6 +36,13 @@ public class CardAPI {
 		return cardRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/card/page/{page}/status/{status}")
+	public Page<Card> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
+		page -= 1;
+		
+		return cardRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
+	}
+	
 	@GetMapping(value = "/api/card/{cardID}")
 	public ResponseEntity<Optional<Card>> getByID(@PathVariable("cardID") Long cardID) {
 		return ResponseEntity.ok(cardRepository.findById(cardID));

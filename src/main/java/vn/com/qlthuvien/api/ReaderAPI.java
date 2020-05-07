@@ -36,6 +36,13 @@ public class ReaderAPI {
 		return readerRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/reader/page/{page}/status/{status}")
+	public Page<Reader> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
+		page -= 1;
+		
+		return readerRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
+	}
+	
 	@GetMapping(value = "/api/reader/search/{key}")
 	public List<Reader> search(@PathVariable("key") String key) {
 		return readerRepository.findAllByReaderFullnameContainingOrAddressContainingOrEmailContaining(key, key, key);

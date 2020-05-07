@@ -36,6 +36,13 @@ public class LibrarianAPI {
 		return librarianRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/librarian/page/{page}/status/{status}")
+	public Page<Librarian> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
+		page -= 1;
+		
+		return librarianRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
+	}
+	
 	@GetMapping(value = "/api/librarian/search/{key}")
 	public List<Librarian> search(@PathVariable("key") String key) {
 		return librarianRepository.findAllByFullnameContainingOrEmailContaining(key, key);
