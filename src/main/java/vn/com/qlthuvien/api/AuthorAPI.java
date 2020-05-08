@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,15 +42,50 @@ public class AuthorAPI {
 		return authorRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/author/page/{page}/sort/{by}/{sort}")
+	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return authorRepository.findAll(PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+		}
+		
+		return authorRepository.findAll(PageRequest.of(page, 10, Sort.by(by)));
+	} 
+	
 	@GetMapping(value = "/api/author/page/{page}/status/{status}")
 	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
 		page -= 1;
 		return authorRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/author/page/{page}/status/{status}/sort/{by}/{sort}")
+	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return authorRepository.findAllByStatusIs(status, PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+		}
+		
+		return authorRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
+	}
+	
+	
 	@GetMapping(value = "/api/author/page/{page}/search/{key}")
 	public Page<Author> search(@PathVariable("page") Integer page, @PathVariable("key") String key) {
 		page -= 1;
+		return authorRepository.findAllByAuthorNameContaining(key, PageRequest.of(page, 10));
+	}
+	
+	@GetMapping(value = "/api/author/page/{page}/search/{key}/sort/{by}/{sort}")
+	public Page<Author> search(@PathVariable("page") Integer page, @PathVariable("key") String key, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return authorRepository.findAllByAuthorNameContaining(key, PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+		}
+		
+		
 		return authorRepository.findAllByAuthorNameContaining(key, PageRequest.of(page, 10));
 	}
 	
