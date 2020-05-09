@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +38,50 @@ public class BillDetailAPI {
 		
 		return billDetailRepository.findAll(PageRequest.of(page, 10));
 	}
+	
+	@GetMapping(value = "/api/bill_detail/page/{page}/sort/{by}")
+	public Page<BillDetail> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by) {
+		page -= 1;
+		
+		return billDetailRepository.findAll(PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
+	@GetMapping(value = "/api/bill_detail/page/{page}/sort/{by}/{sort}")
+	public Page<BillDetail> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return billDetailRepository.findAll(PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+		}
+		
+		return billDetailRepository.findAll(PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
+	@GetMapping(value = "/api/bill_detail/page/{page}/status/{status}")
+	public Page<BillDetail> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
+		page -= 1;
+		
+		return billDetailRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
+	}
+	
+	@GetMapping(value = "/api/bill_detail/page/{page}/status/{status}/sort/{by}")
+	public Page<BillDetail> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status, @PathVariable("by") String by) {
+		page -= 1;
+		
+		return billDetailRepository.findAllByStatusIs(status, PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
+	@GetMapping(value = "/api/bill_detail/page/{page}/status/{status}/sort/{by}/{sort}")
+	public Page<BillDetail> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return billDetailRepository.findAllByStatusIs(status, PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+		}
+		
+		return billDetailRepository.findAllByStatusIs(status, PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
 	
 	@GetMapping(value = "/api/bill_detail/{billID}/{bookID}")
 	public ResponseEntity<Optional<BillDetail>> getByID(@PathVariable("billID") Long billID, @PathVariable("bookID") Long bookID) {

@@ -42,6 +42,13 @@ public class AuthorAPI {
 		return authorRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/author/page/{page}/sort/{by}")
+	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by) {
+		page -= 1;
+		
+		return authorRepository.findAll(PageRequest.of(page, 10, Sort.by(by)));
+	} 
+	
 	@GetMapping(value = "/api/author/page/{page}/sort/{by}/{sort}")
 	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by, @PathVariable("sort") String sort) {
 		page -= 1;
@@ -56,6 +63,13 @@ public class AuthorAPI {
 	@GetMapping(value = "/api/author/page/{page}/status/{status}")
 	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
 		page -= 1;
+		return authorRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
+	}
+	
+	@GetMapping(value = "/api/author/page/{page}/status/{status}/sort/{by}")
+	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status, @PathVariable("by") String by) {
+		page -= 1;
+		
 		return authorRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
 	}
 	
@@ -77,6 +91,12 @@ public class AuthorAPI {
 		return authorRepository.findAllByAuthorNameContaining(key, PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/author/page/{page}/search/{key}/sort/{by}")
+	public Page<Author> search(@PathVariable("page") Integer page, @PathVariable("key") String key, @PathVariable("by") String by) {
+		page -= 1;
+		return authorRepository.findAllByAuthorNameContaining(key, PageRequest.of(page, 10));
+	}
+	
 	@GetMapping(value = "/api/author/page/{page}/search/{key}/sort/{by}/{sort}")
 	public Page<Author> search(@PathVariable("page") Integer page, @PathVariable("key") String key, @PathVariable("by") String by, @PathVariable("sort") String sort) {
 		page -= 1;
@@ -84,7 +104,6 @@ public class AuthorAPI {
 		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
 			return authorRepository.findAllByAuthorNameContaining(key, PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
 		}
-		
 		
 		return authorRepository.findAllByAuthorNameContaining(key, PageRequest.of(page, 10));
 	}

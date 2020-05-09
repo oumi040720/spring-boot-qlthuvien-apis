@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,24 @@ public class BillAPI {
 		page -= 1;
 		
 		return billRepository.findAll(PageRequest.of(page, 10));
+	}
+	
+	@GetMapping(value = "/api/bill/page/{page}/sort/{by}")
+	public Page<Bill> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by) {
+		page -= 1;
+		
+		return billRepository.findAll(PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
+	@GetMapping(value = "/api/bill/page/{page}/sort/{by}/{sort}")
+	public Page<Bill> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return billRepository.findAll(PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+		}
+		
+		return billRepository.findAll(PageRequest.of(page, 10, Sort.by(by)));
 	}
 	
 	@GetMapping(value = "/api/bill/{billID}")
