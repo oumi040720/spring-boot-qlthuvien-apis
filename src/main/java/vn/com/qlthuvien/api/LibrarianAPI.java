@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +43,24 @@ public class LibrarianAPI {
 		return librarianRepository.findAll(PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/librarian/page/{page}/sort/{by}")
+	public Page<Librarian> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by) {
+		page -= 1;
+		
+		return librarianRepository.findAll(PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
+	@GetMapping(value = "/api/librarian/page/{page}/sort/{by}/{sort}")
+	public Page<Librarian> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return librarianRepository.findAll(PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+		}
+		
+		return librarianRepository.findAll(PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
 	@GetMapping(value = "/api/librarian/page/{page}/status/{status}")
 	public Page<Librarian> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
 		page -= 1;
@@ -48,11 +68,47 @@ public class LibrarianAPI {
 		return librarianRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/librarian/page/{page}/status/{status}/sort/{by}")
+	public Page<Librarian> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status, @PathVariable("by") String by) {
+		page -= 1;
+		
+		return librarianRepository.findAllByStatusIs(status, PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
+	@GetMapping(value = "/api/librarian/page/{page}/status/{status}/sort/{by}/{sort}")
+	public Page<Librarian> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return librarianRepository.findAllByStatusIs(status, PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+		}
+		
+		return librarianRepository.findAllByStatusIs(status, PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
 	@GetMapping(value = "/api/librarian/page/{page}/search/{key}")
 	public Page<Librarian> search(@PathVariable("page") Integer page, @PathVariable("key") String key) {
 		page -= 1;
 		
 		return librarianRepository.findAllByFullnameContainingOrEmailContaining(key, key, PageRequest.of(page, 10));
+	}
+	
+	@GetMapping(value = "/api/librarian/page/{page}/search/{key}/sort/{by}")
+	public Page<Librarian> search(@PathVariable("page") Integer page, @PathVariable("key") String key, @PathVariable("by") String by) {
+		page -= 1;
+		
+		return librarianRepository.findAllByFullnameContainingOrEmailContaining(key, key, PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
+	@GetMapping(value = "/api/librarian/page/{page}/search/{key}/sort/{by}/{sort}")
+	public Page<Librarian> search(@PathVariable("page") Integer page, @PathVariable("key") String key, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return librarianRepository.findAllByFullnameContainingOrEmailContaining(key, key, PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+		}
+		
+		return librarianRepository.findAllByFullnameContainingOrEmailContaining(key, key, PageRequest.of(page, 10, Sort.by(by)));
 	}
 	
 	@GetMapping(value = "/api/librarian/{librarianID}")
