@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,11 +36,34 @@ public class BookAPI {
 		return bookRepository.findAllByBookNameContainingOrBookSubjectContaining(key, key);
 	}
 	
+	@GetMapping(value = "/api/book/year/{year}")
+	public List<Book> search(@PathVariable("year") Integer year) {
+		return bookRepository.findAllByPublishingYearIs(year);
+	}
+	
 	@GetMapping(value = "/api/book/page/{page}")
 	public Page<Book> getAll(@PathVariable("page") Integer page) {
 		page -= 1;
 		
 		return bookRepository.findAll(PageRequest.of(page, 10));
+	}
+	
+	@GetMapping(value = "/api/book/page/{page}/sort/{by}")
+	public Page<Book> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by) {
+		page -= 1;
+		
+		return bookRepository.findAll(PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
+	@GetMapping(value = "/api/book/page/{page}/sort/{by}/{sort}")
+	public Page<Book> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return bookRepository.findAll(PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+		}
+		
+		return bookRepository.findAll(PageRequest.of(page, 10, Sort.by(by)));
 	}
 	
 	@GetMapping(value = "/api/book/page/{page}/status/{status}")
@@ -48,13 +73,74 @@ public class BookAPI {
 		return bookRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
 	}
 	
+	@GetMapping(value = "/api/book/page/{page}/status/{status}/sort/{by}")
+	public Page<Book> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status, @PathVariable("by") String by) {
+		page -= 1;
+		
+		return bookRepository.findAllByStatusIs(status, PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
+	@GetMapping(value = "/api/book/page/{page}/status/{status}/sort/{by}/{sort}")
+	public Page<Book> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return bookRepository.findAllByStatusIs(status, PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+		}
+		
+		return bookRepository.findAllByStatusIs(status, PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
 	@GetMapping(value = "/api/book/page/{page}/search/{key}")
 	public Page<Book> search(@PathVariable("page") Integer page, @PathVariable("key") String key) {
 		page -= 1;
 		
 		return bookRepository.findAllByBookNameContainingOrBookSubjectContaining(key, key, PageRequest.of(page, 10));
 	}
+	
+	@GetMapping(value = "/api/book/page/{page}/search/{key}/sort/{by}")
+	public Page<Book> search(@PathVariable("page") Integer page, @PathVariable("key") String key, @PathVariable("by") String by) {
+		page -= 1;
 		
+		return bookRepository.findAllByBookNameContainingOrBookSubjectContaining(key, key, PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
+	@GetMapping(value = "/api/book/page/{page}/search/{key}/sort/{by}/{sort}")
+	public Page<Book> search(@PathVariable("page") Integer page, @PathVariable("key") String key, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return bookRepository.findAllByBookNameContainingOrBookSubjectContaining(key, key, PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+		}
+		
+		return bookRepository.findAllByBookNameContainingOrBookSubjectContaining(key, key, PageRequest.of(page, 10, Sort.by(by)));
+	}
+		
+	@GetMapping(value = "/api/book/page/{page}/year/{year}")
+	public Page<Book> getAll(@PathVariable("page") Integer page, @PathVariable("year") Integer year) {
+		page -= 1;
+		
+		return bookRepository.findAllByPublishingYearIs(year, PageRequest.of(page, 10));
+	}
+	
+	@GetMapping(value = "/api/book/page/{page}/year/{year}/sort/{by}")
+	public Page<Book> getAll(@PathVariable("page") Integer page, @PathVariable("year") Integer year, @PathVariable("by") String by) {
+		page -= 1;
+		
+		return bookRepository.findAllByPublishingYearIs(year, PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
+	@GetMapping(value = "/api/book/page/{page}/year/{year}/sort/{by}/{sort}")
+	public Page<Book> getAll(@PathVariable("page") Integer page, @PathVariable("year") Integer year, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+		page -= 1;
+		
+		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
+			return bookRepository.findAllByPublishingYearIs(year, PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));	
+		}
+		
+		return bookRepository.findAllByPublishingYearIs(year, PageRequest.of(page, 10, Sort.by(by)));
+	}
+	
 	@GetMapping(value = "/api/book/{bookID}")
 	public ResponseEntity<Optional<Book>> getByID(@PathVariable("bookID") Long bookID) {
 		return ResponseEntity.ok(bookRepository.findById(bookID));

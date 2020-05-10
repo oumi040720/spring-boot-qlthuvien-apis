@@ -18,4 +18,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 	
 	public Page<Book> findAllByBookNameContainingOrBookSubjectContaining(String bookName, String bookSubject, Pageable pageable);
 	
+	public List<Book> findAllByPublishingYearIs(Integer publishingYear);
+	
+	public Page<Book> findAllByPublishingYearIs(Integer publishingYear, Pageable pageable);
+	
 }
