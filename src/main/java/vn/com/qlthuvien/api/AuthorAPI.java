@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -114,12 +116,20 @@ public class AuthorAPI {
 	}
 	
 	@PostMapping(value = "/api/author")
-	public ResponseEntity<Author> createRole(@RequestBody Author author) {
+	public ResponseEntity<Author> createRole(@Validated @RequestBody Author author, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(authorRepository.save(author));
 	}
 	
 	@PutMapping(value = "/api/author")
-	public ResponseEntity<Author> updateRole(@RequestBody Author author) {
+	public ResponseEntity<Author> updateRole(@Validated @RequestBody Author author, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(authorRepository.save(author));
 	}
 	

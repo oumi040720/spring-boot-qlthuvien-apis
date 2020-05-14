@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -90,12 +92,24 @@ public class BookCategoryAPI {
 	}
 	
 	@PostMapping(value = "/api/book_category")
-	public ResponseEntity<BookCategory> createRole(@RequestBody BookCategory bookCategory) {
+	public ResponseEntity<BookCategory> create(@Validated @RequestBody BookCategory bookCategory, BindingResult bindingResult) {
+		if(bookCategoryRepository.existsById(bookCategory.getId())) {
+			bindingResult.rejectValue("id", "book_category.exists.id");
+		}
+		
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(bookCategoryRepository.save(bookCategory));
 	}
 	
 	@PutMapping(value = "/api/book_category")
-	public ResponseEntity<BookCategory> updateRole(@RequestBody BookCategory bookCategory) {
+	public ResponseEntity<BookCategory> update(@Validated @RequestBody BookCategory bookCategory, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(bookCategoryRepository.save(bookCategory));
 	}
 	

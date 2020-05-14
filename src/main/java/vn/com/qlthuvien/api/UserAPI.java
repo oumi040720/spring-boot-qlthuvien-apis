@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -117,12 +119,24 @@ public class UserAPI {
 	}
 	
 	@PostMapping(value = "/api/user")
-	public ResponseEntity<User> createRole(@RequestBody User user) {
+	public ResponseEntity<?> create(@Validated @RequestBody User user, BindingResult bindingResult) {
+		if (userRepository.existsById(user.getUsername())) {
+			bindingResult.rejectValue("username", "user.exists.username");
+		}
+		
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(bindingResult.getAllErrors());
+		}
+		
 		return ResponseEntity.ok(userRepository.save(user));
 	}
 	
 	@PutMapping(value = "/api/user")
-	public ResponseEntity<User> updateRole(@RequestBody User user) {
+	public ResponseEntity<User> updateRole(@Validated @RequestBody User user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(userRepository.save(user));
 	}
 	

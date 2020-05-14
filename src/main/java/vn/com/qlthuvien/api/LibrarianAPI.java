@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -117,12 +119,20 @@ public class LibrarianAPI {
 	}
 	
 	@PostMapping(value = "/api/librarian")
-	public ResponseEntity<Librarian> createRole(@RequestBody Librarian librarian) {
+	public ResponseEntity<Librarian> create(@Validated @RequestBody Librarian librarian, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(librarianRepository.save(librarian));
 	}
 	
 	@PutMapping(value = "/api/librarian")
-	public ResponseEntity<Librarian> updateRole(@RequestBody Librarian librarian) {
+	public ResponseEntity<Librarian> updateRole(@Validated @RequestBody Librarian librarian, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(librarianRepository.save(librarian));
 	}
 	

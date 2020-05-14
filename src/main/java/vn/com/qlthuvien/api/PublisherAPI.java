@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -117,12 +119,20 @@ public class PublisherAPI {
 	}
 	
 	@PostMapping(value = "/api/publisher")
-	public ResponseEntity<Publisher> createRole(@RequestBody Publisher publisher) {
+	public ResponseEntity<Publisher> create(@Validated @RequestBody Publisher publisher, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(publisherRepository.save(publisher));
 	}
 	
 	@PutMapping(value = "/api/publisher")
-	public ResponseEntity<Publisher> updateRole(@RequestBody Publisher publisher) {
+	public ResponseEntity<Publisher> updateRole(@Validated @RequestBody Publisher publisher, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(publisherRepository.save(publisher));
 	}
 	

@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -34,6 +35,7 @@ public class BookAuthor {
 	private Author author;
 
 	@Column(name = "Status")
+	@NotNull(message = "book_author.NotNull.status")
 	private Boolean status;
 
 	public BookAuthorID getId() {

@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -38,11 +39,13 @@ public class Bill {
 	@ManyToOne
 	@JoinColumn(name = "CardID")
 	@JsonProperty(access = Access.WRITE_ONLY)
+	@NotNull(message = "bill.NotNull.card")
 	private Card card;
 
 	@ManyToOne
 	@JoinColumn(name = "LibrarianID")
 	@JsonProperty(access = Access.WRITE_ONLY)
+	@NotNull(message = "bill.NotNull.librarian")
 	private Librarian librarian;
 
 	@OneToMany(mappedBy = "bill", fetch = FetchType.LAZY)

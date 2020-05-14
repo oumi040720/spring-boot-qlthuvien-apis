@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -117,12 +119,20 @@ public class ReaderAPI {
 	}
 	
 	@PostMapping(value = "/api/reader")
-	public ResponseEntity<Reader> createRole(@RequestBody Reader reader) {
+	public ResponseEntity<Reader> createRole(@Validated @RequestBody Reader reader, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(readerRepository.save(reader));
 	}
 	
 	@PutMapping(value = "/api/reader")
-	public ResponseEntity<Reader> updateRole(@RequestBody Reader reader) {
+	public ResponseEntity<Reader> updateRole(@Validated @RequestBody Reader reader, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(readerRepository.save(reader));
 	}
 	

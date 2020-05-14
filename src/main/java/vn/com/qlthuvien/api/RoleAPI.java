@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,12 +35,20 @@ public class RoleAPI {
 	}
 	
 	@PostMapping(value = "/api/role")
-	public ResponseEntity<Role> createRole(@RequestBody Role role) {
+	public ResponseEntity<Role> create(@Validated @RequestBody Role role, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(roleRepository.save(role));
 	}
 	
 	@PutMapping(value = "/api/role")
-	public ResponseEntity<Role> updateRole(@RequestBody Role role) {
+	public ResponseEntity<Role> update(@Validated @RequestBody Role role, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(roleRepository.save(role));
 	}
 	

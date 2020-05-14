@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,12 +64,20 @@ public class BillAPI {
 	}
 	
 	@PostMapping(value = "/api/bill")
-	public ResponseEntity<Bill> createRole(@RequestBody Bill bill) {
+	public ResponseEntity<Bill> createRole(@Validated @RequestBody Bill bill, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(billRepository.save(bill));
 	}
 	
 	@PutMapping(value = "/api/bill")
-	public ResponseEntity<Bill> updateRole(@RequestBody Bill bill) {
+	public ResponseEntity<Bill> updateRole(@Validated @RequestBody Bill bill, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(billRepository.save(bill));
 	}
 	

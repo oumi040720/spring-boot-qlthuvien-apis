@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "Roles")
@@ -21,9 +22,11 @@ public class Role {
 	private Long roleID;
 
 	@Column(name = "RoleName")
+	@NotBlank(message = "role.NotNull.name")
 	private String roleName;
 
 	@Column(name = "RoleCode")
+	@NotBlank(message = "role.NotNull.code")
 	private String roleCode;
 
 	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY)

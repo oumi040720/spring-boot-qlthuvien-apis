@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Authors")
@@ -21,12 +23,15 @@ public class Author {
 	private Long authorID;
 
 	@Column(name = "AuthorName")
+	@NotBlank(message = "author.NotNull.authorName")
 	private String authorName;
 
 	@Column(name = "Photo")
+	@NotBlank(message = "author.NotNull.photo")
 	private String photo;
 
 	@Column(name = "Status")
+	@NotNull(message = "author.NotNull.status")
 	private Boolean status;
 
 	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)

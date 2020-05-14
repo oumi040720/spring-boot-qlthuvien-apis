@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 @Embeddable
 public class BillDetailID implements Serializable {
@@ -11,9 +12,11 @@ public class BillDetailID implements Serializable {
 	private static final long serialVersionUID = -497937598710223002L;
 
 	@Column(name = "BillID")
+	@NotNull(message = "billDetail.NotNull.billID")
 	private Long billID;
 
 	@Column(name = "BookID")
+	@NotNull(message = "billDetail.NotNull.bookID")
 	private Long bookID;
 
 	public BillDetailID() {

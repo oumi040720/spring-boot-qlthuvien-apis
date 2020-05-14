@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "Categories")
@@ -21,9 +22,11 @@ public class Category {
 	private Long categoryID;
 
 	@Column(name = "CategoryName")
+	@NotBlank(message = "category.NotNull.name")
 	private String categoryName;
 
 	@Column(name = "CategoryCode")
+	@NotBlank(message = "category.NotNull.code")
 	private String categoryCode;
 
 	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)

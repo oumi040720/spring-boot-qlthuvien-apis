@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,12 +93,20 @@ public class BillDetailAPI {
 	}
 	
 	@PostMapping(value = "/api/bill_detail")
-	public ResponseEntity<BillDetail> createRole(@RequestBody BillDetail billDetail) {
+	public ResponseEntity<BillDetail> create(@Validated @RequestBody BillDetail billDetail, BindingResult bindingResult) {
+		if (billDetailRepository.existsById(billDetail.getId())) {
+			bindingResult.rejectValue("id", "billDetail.exists.id");
+		}
+		
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(billDetailRepository.save(billDetail));
 	}
 	
 	@PutMapping(value = "/api/bill_detail")
-	public ResponseEntity<BillDetail> updateRole(@RequestBody BillDetail billDetail) {
+	public ResponseEntity<BillDetail> update(@Validated @RequestBody BillDetail billDetail, BindingResult bindingResult) {
 		return ResponseEntity.ok(billDetailRepository.save(billDetail));
 	}
 	

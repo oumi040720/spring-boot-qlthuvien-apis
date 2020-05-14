@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 @Embeddable
 public class BookCategoryID implements Serializable {
@@ -11,9 +12,11 @@ public class BookCategoryID implements Serializable {
 	private static final long serialVersionUID = -4491880486335193840L;
 
 	@Column(name = "BookID")
+	@NotNull(message = "book_category.NotNull.bookID")
 	private Long bookID;
 
 	@Column(name = "CategoryID")
+	@NotNull(message = "book_category.NotNull.categoryID")
 	private Long categoryID;
 
 	public BookCategoryID() {

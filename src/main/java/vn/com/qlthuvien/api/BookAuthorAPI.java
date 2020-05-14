@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -90,12 +92,24 @@ public class BookAuthorAPI {
 	}
 	
 	@PostMapping(value = "/api/book_author")
-	public ResponseEntity<BookAuthor> createRole(@RequestBody BookAuthor bookAuthor) {
+	public ResponseEntity<BookAuthor> create(@Validated @RequestBody BookAuthor bookAuthor, BindingResult bindingResult) {
+		if (bookAuthorRepository.existsById(bookAuthor.getId())) {
+			bindingResult.rejectValue("id", "book_author.exists.id");
+		}
+		
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(bookAuthorRepository.save(bookAuthor));
 	}
 	
 	@PutMapping(value = "/api/book_author")
-	public ResponseEntity<BookAuthor> updateRole(@RequestBody BookAuthor bookAuthor) {
+	public ResponseEntity<BookAuthor> update(@Validated @RequestBody BookAuthor bookAuthor, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(bookAuthorRepository.save(bookAuthor));
 	}
 	

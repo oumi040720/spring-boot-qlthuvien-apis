@@ -1,5 +1,6 @@
 package vn.com.qlthuvien.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,6 +13,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -20,30 +28,44 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 @Table(name = "Librarians")
 public class Librarian {
 
+	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            							+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	
 	@Id
 	@Column(name = "LibrarianID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long librarianID;;
 
 	@Column(name = "Fullname")
+	@NotBlank(message = "librarian.NotNull.fullname")
 	private String fullname;
 
 	@Column(name = "Birthday")
-	private String birthday;
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull(message = "librarian.NotNull.birthday")
+	private Date birthday;
 
 	@Column(name = "Gender")
-	private boolean gender;
+	@NotNull(message = "librarian.NotNull.gender")
+	private Boolean gender;
 
 	@Column(name = "Email")
+	@NotBlank(message = "librarian.NotNull.email")
+	@Pattern(regexp = EMAIL_PATTERN, message = "librarian.format.email")
 	private String email;
 
 	@Column(name = "Phone")
+	@NotBlank(message = "librarian.NotNull.phone")
+	@Pattern(regexp = "^0[1-9]{1}[0-9]{8}", message = "librarian.format.phone")
 	private String phone;
 
 	@Column(name = "Photo")
+	@NotBlank(message = "librarian.NotNull.photo")
 	private String photo;
 
 	@Column(name = "Status")
+	@NotNull(message = "librarian.NotNull.status")
 	private Boolean status;
 
 	@OneToOne(fetch = FetchType.LAZY, targetEntity = User.class)
@@ -70,11 +92,11 @@ public class Librarian {
 		this.fullname = fullname;
 	}
 
-	public String getBirthday() {
+	public Date getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(String birthday) {
+	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
 

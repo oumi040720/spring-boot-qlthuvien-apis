@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -147,12 +149,20 @@ public class BookAPI {
 	}
 	
 	@PostMapping(value = "/api/book")
-	public ResponseEntity<Book> createRole(@RequestBody Book book) {
+	public ResponseEntity<Book> create(@Validated @RequestBody Book book, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(bookRepository.save(book));
 	}
 	
 	@PutMapping(value = "/api/book")
-	public ResponseEntity<Book> updateRole(@RequestBody Book book) {
+	public ResponseEntity<Book> update(@Validated @RequestBody Book book, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(bookRepository.save(book));
 	}
 	

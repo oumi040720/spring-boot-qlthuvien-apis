@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,12 +94,20 @@ public class CategoryAPI {
 	}
 	
 	@PostMapping(value = "/api/category")
-	public ResponseEntity<Category> createRole(@RequestBody Category category) {
+	public ResponseEntity<Category> create(@Validated @RequestBody Category category, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+		
 		return ResponseEntity.ok(categoryRepository.save(category));
 	}
 	
 	@PutMapping(value = "/api/category")
-	public ResponseEntity<Category> updateRole(@RequestBody Category category) {
+	public ResponseEntity<Category> update(@Validated @RequestBody Category category, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(null);
+		}
+
 		return ResponseEntity.ok(categoryRepository.save(category));
 	}
 	
