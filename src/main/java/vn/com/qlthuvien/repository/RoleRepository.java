@@ -8,4 +8,6 @@ import vn.com.qlthuvien.model.Role;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
+	public Boolean existsByRoleCode(String roleCode);
+	
 }

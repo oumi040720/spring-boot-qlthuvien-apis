@@ -95,6 +95,10 @@ public class CategoryAPI {
 	
 	@PostMapping(value = "/api/category")
 	public ResponseEntity<Category> create(@Validated @RequestBody Category category, BindingResult bindingResult) {
+		if (categoryRepository.existsByCategoryCode(category.getCategoryCode())) {
+			bindingResult.rejectValue("categoryCode", "category.exists.code");
+		}
+		
 		if (bindingResult.hasErrors()) {
 			return ResponseEntity.ok(null);
 		}

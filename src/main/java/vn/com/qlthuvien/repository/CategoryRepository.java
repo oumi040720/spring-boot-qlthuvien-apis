@@ -11,6 +11,8 @@ import vn.com.qlthuvien.model.Category;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+	
+	public Boolean existsByCategoryCode(String categoryCode);
 
 	public List<Category> findAllByCategoryNameContainingOrCategoryCodeContaining(String categoryName, String categoryCode);
 	
