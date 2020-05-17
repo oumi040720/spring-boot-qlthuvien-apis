@@ -35,13 +35,13 @@ public class RoleAPI {
 	}
 	
 	@PostMapping(value = "/api/role")
-	public ResponseEntity<?> create(@Validated @RequestBody Role role, BindingResult bindingResult) {
+	public ResponseEntity<Role> create(@Validated @RequestBody Role role, BindingResult bindingResult) {
 		if (roleRepository.existsByRoleCode(role.getRoleCode())) {
 			bindingResult.rejectValue("roleCode", "role.exists.code");
 		}
 		
 		if (bindingResult.hasErrors()) {
-			return ResponseEntity.ok(bindingResult.getAllErrors());
+			return ResponseEntity.ok(null);
 		}
 		
 		return ResponseEntity.ok(roleRepository.save(role));

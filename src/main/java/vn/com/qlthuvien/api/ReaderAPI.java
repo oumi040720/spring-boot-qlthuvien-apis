@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import vn.com.qlthuvien.model.Card;
 import vn.com.qlthuvien.model.Reader;
+import vn.com.qlthuvien.repository.CardRepository;
 import vn.com.qlthuvien.repository.ReaderRepository;
 
 @RestController
@@ -28,6 +30,9 @@ public class ReaderAPI {
 	@Autowired
 	private ReaderRepository readerRepository;
 
+	@Autowired
+	private CardRepository cardRepository;
+	
 	@GetMapping(value = "/api/reader")
 	public List<Reader> getAll() {
 		return readerRepository.findAll();
@@ -119,7 +124,12 @@ public class ReaderAPI {
 	}
 	
 	@PostMapping(value = "/api/reader")
-	public ResponseEntity<Reader> createRole(@Validated @RequestBody Reader reader, BindingResult bindingResult) {
+	public ResponseEntity<Reader> create(@Validated @RequestBody Reader reader, BindingResult bindingResult) {
+		Card card = cardRepository.getOne(reader.getCard().getCardID());
+		if (card.getReader() != null) {
+			bindingResult.rejectValue("card", "reader.using.card");
+		}
+		
 		if (bindingResult.hasErrors()) {
 			return ResponseEntity.ok(null);
 		}
@@ -128,7 +138,12 @@ public class ReaderAPI {
 	}
 	
 	@PutMapping(value = "/api/reader")
-	public ResponseEntity<Reader> updateRole(@Validated @RequestBody Reader reader, BindingResult bindingResult) {
+	public ResponseEntity<Reader> update(@Validated @RequestBody Reader reader, BindingResult bindingResult) {
+		Card card = cardRepository.getOne(reader.getCard().getCardID());
+		if (card.getReader() != null) {
+			bindingResult.rejectValue("card", "reader.using.card");
+		}
+		
 		if (bindingResult.hasErrors()) {
 			return ResponseEntity.ok(null);
 		}

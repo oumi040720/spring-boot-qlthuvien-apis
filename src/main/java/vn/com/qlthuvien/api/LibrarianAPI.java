@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.com.qlthuvien.model.Librarian;
+import vn.com.qlthuvien.model.User;
 import vn.com.qlthuvien.repository.LibrarianRepository;
+import vn.com.qlthuvien.repository.UserRepository;
 
 @RestController
 public class LibrarianAPI {
@@ -28,6 +30,9 @@ public class LibrarianAPI {
 	@Autowired
 	private LibrarianRepository librarianRepository;
 
+	@Autowired
+	private UserRepository userRepository;
+	
 	@GetMapping(value = "/api/librarian")
 	public List<Librarian> getAll() {
 		return librarianRepository.findAll();
@@ -120,6 +125,11 @@ public class LibrarianAPI {
 	
 	@PostMapping(value = "/api/librarian")
 	public ResponseEntity<Librarian> create(@Validated @RequestBody Librarian librarian, BindingResult bindingResult) {
+		User user = userRepository.getOne(librarian.getUser().getUsername());
+		if (user.getLibrarian() != null) {
+			bindingResult.rejectValue("user", "librarian.using.user");
+		}
+		
 		if (bindingResult.hasErrors()) {
 			return ResponseEntity.ok(null);
 		}
@@ -129,6 +139,11 @@ public class LibrarianAPI {
 	
 	@PutMapping(value = "/api/librarian")
 	public ResponseEntity<Librarian> updateRole(@Validated @RequestBody Librarian librarian, BindingResult bindingResult) {
+		User user = userRepository.getOne(librarian.getUser().getUsername());
+		if (user.getLibrarian() != null) {
+			bindingResult.rejectValue("user", "librarian.using.user");
+		}
+		
 		if (bindingResult.hasErrors()) {
 			return ResponseEntity.ok(null);
 		}
