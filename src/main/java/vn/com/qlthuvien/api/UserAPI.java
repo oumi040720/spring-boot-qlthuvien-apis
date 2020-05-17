@@ -142,9 +142,16 @@ public class UserAPI {
 	
 	@DeleteMapping(value = "/api/user/{username}")
 	public ResponseEntity<String> delete(@PathVariable("username") String username) {
-		userRepository.deleteById(username);
-		return ResponseEntity.ok("Deleted: " + username);
+		try {
+			if (userRepository.getOne(username).getLibrarian() == null) {
+				userRepository.deleteById(username);
+				return ResponseEntity.ok("user.delete.success");
+			} else {
+				return ResponseEntity.ok("user.delete.using.librarian");
+			}	
+		} catch (Exception e) {
+			return ResponseEntity.ok("user.delete.fail");
+		}
 	}
-	
 	
 }

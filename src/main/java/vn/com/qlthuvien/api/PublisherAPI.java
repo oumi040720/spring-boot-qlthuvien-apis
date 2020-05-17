@@ -138,8 +138,16 @@ public class PublisherAPI {
 	
 	@DeleteMapping(value = "/api/publisher/{publisherID}")
 	public ResponseEntity<String> delete(@PathVariable("publisherID") Long publisherID) {
-		publisherRepository.deleteById(publisherID);
-		return ResponseEntity.ok("Deleted: " + publisherID);
+		try {
+			if (publisherRepository.getOne(publisherID).getBooks().isEmpty()) {
+				publisherRepository.deleteById(publisherID);
+				return ResponseEntity.ok("publisher.delete.success");
+			} else {
+				return ResponseEntity.ok("publisher.delete.using.book");
+			}			
+		} catch (Exception e) {
+			return ResponseEntity.ok("publisher.delete.fail");
+		}
 	}
 	
 }

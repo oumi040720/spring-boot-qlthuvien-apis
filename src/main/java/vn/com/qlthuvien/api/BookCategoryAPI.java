@@ -115,10 +115,13 @@ public class BookCategoryAPI {
 	
 	@DeleteMapping(value = "/api/book_category/{bookID}/{categoryID}")
 	public ResponseEntity<String> delete(@PathVariable("bookID") Long bookID, @PathVariable("categoryID") Long categoryID) {
-		BookCategoryID id = new BookCategoryID(bookID, categoryID);
-		
-		bookCategoryRepository.deleteById(id);
-		return ResponseEntity.ok("Deleted: " + categoryID);
+		try {
+			BookCategoryID id = new BookCategoryID(bookID, categoryID);
+			bookCategoryRepository.deleteById(id);
+			return ResponseEntity.ok("book_category.delete.success");
+		} catch (Exception e) {
+			return ResponseEntity.ok("book_category.delete.fail");
+		}
 	}
 	
 }

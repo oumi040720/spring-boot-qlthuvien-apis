@@ -115,10 +115,13 @@ public class BookAuthorAPI {
 	
 	@DeleteMapping(value = "/api/book_author/{bookID}/{authorID}")
 	public ResponseEntity<String> delete(@PathVariable("bookID") Long bookID, @PathVariable("authorID") Long authorID) {
-		BookAuthorID id = new BookAuthorID(bookID, authorID);
-		
-		bookAuthorRepository.deleteById(id);
-		return ResponseEntity.ok("Deleted: " + authorID);
+		try {
+			BookAuthorID id = new BookAuthorID(bookID, authorID);
+			bookAuthorRepository.deleteById(id);
+			return ResponseEntity.ok("book_author.delete.success");
+		} catch (Exception e) {
+			return ResponseEntity.ok("book_author.delete.fail");
+		}
 	}
 	
 }

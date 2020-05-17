@@ -58,8 +58,16 @@ public class RoleAPI {
 	
 	@DeleteMapping(value = "/api/role/{roleID}")
 	public ResponseEntity<String> delete(@PathVariable("roleID") Long roleID) {
-		roleRepository.deleteById(roleID);
-		return ResponseEntity.ok("Deleted: " + roleID);
+		try {
+			if (roleRepository.getOne(roleID).getUsers().isEmpty()) {
+				roleRepository.deleteById(roleID);
+				return ResponseEntity.ok("role.delete.success");
+			} else {
+				return ResponseEntity.ok("role.delete.using.user");
+			}
+		} catch (Exception e) {
+			return ResponseEntity.ok("role.delete.fail");
+		}
 	}
 	
 }

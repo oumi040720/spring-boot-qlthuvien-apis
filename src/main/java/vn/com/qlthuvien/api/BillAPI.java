@@ -83,8 +83,16 @@ public class BillAPI {
 	
 	@DeleteMapping(value = "/api/bill/{billID}")
 	public ResponseEntity<String> delete(@PathVariable("billID") Long billID) {
-		billRepository.deleteById(billID);
-		return ResponseEntity.ok("Deleted: " + billID);
+		try {
+			if (billRepository.getOne(billID).getBillDetails().isEmpty()) {
+				billRepository.deleteById(billID);
+				return ResponseEntity.ok("bill.delete.success");
+			} else {
+				return ResponseEntity.ok("bill.delete.using.bill_detail");
+			}
+		} catch (Exception e) {
+			return ResponseEntity.ok("bill.delete.fail");
+		}
 	}
 	
 }

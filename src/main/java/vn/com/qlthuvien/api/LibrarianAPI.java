@@ -138,8 +138,16 @@ public class LibrarianAPI {
 	
 	@DeleteMapping(value = "/api/librarian/{librarianID}")
 	public ResponseEntity<String> delete(@PathVariable("librarianID") Long librarianID) {
-		librarianRepository.deleteById(librarianID);
-		return ResponseEntity.ok("Deleted: " + librarianID);
+		try {
+			if (librarianRepository.getOne(librarianID).getBills().isEmpty()) {
+				librarianRepository.deleteById(librarianID);
+				return ResponseEntity.ok("librarian.delete.success");
+			} else {
+				return ResponseEntity.ok("librarian.delete.using.bill");
+			}
+		} catch (Exception e) {
+			return ResponseEntity.ok("librarian.delete.fail");
+		}
 	}
 	
 }

@@ -43,7 +43,7 @@ public class User {
 
 	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	private Librarian librarian;
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -74,6 +74,14 @@ public class User {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public Librarian getLibrarian() {
+		return librarian;
+	}
+
+	public void setLibrarian(Librarian librarian) {
+		this.librarian = librarian;
 	}
 
 }

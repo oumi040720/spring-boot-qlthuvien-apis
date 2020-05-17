@@ -32,111 +32,124 @@ public class AuthorAPI {
 	public List<Author> getAll() {
 		return authorRepository.findAll();
 	}
-	
+
 	@GetMapping(value = "/api/author/search/{key}")
 	public List<Author> search(@PathVariable("key") String key) {
 		return authorRepository.findAllByAuthorNameContaining(key);
 	}
-	
+
 	@GetMapping(value = "/api/author/page/{page}")
 	public Page<Author> getAll(@PathVariable("page") Integer page) {
 		page -= 1;
 		return authorRepository.findAll(PageRequest.of(page, 10));
 	}
-	
+
 	@GetMapping(value = "/api/author/page/{page}/sort/{by}")
 	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by) {
 		page -= 1;
-		
+
 		return authorRepository.findAll(PageRequest.of(page, 10, Sort.by(by)));
-	} 
-	
+	}
+
 	@GetMapping(value = "/api/author/page/{page}/sort/{by}/{sort}")
-	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("by") String by,
+			@PathVariable("sort") String sort) {
 		page -= 1;
-		
+
 		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
 			return authorRepository.findAll(PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
 		}
-		
+
 		return authorRepository.findAll(PageRequest.of(page, 10, Sort.by(by)));
-	} 
-	
+	}
+
 	@GetMapping(value = "/api/author/page/{page}/status/{status}")
 	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status) {
 		page -= 1;
 		return authorRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
 	}
-	
+
 	@GetMapping(value = "/api/author/page/{page}/status/{status}/sort/{by}")
-	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status, @PathVariable("by") String by) {
+	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status,
+			@PathVariable("by") String by) {
 		page -= 1;
-		
+
 		return authorRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
 	}
-	
+
 	@GetMapping(value = "/api/author/page/{page}/status/{status}/sort/{by}/{sort}")
-	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+	public Page<Author> getAll(@PathVariable("page") Integer page, @PathVariable("status") Boolean status,
+			@PathVariable("by") String by, @PathVariable("sort") String sort) {
 		page -= 1;
-		
+
 		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
 			return authorRepository.findAllByStatusIs(status, PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
 		}
-		
+
 		return authorRepository.findAllByStatusIs(status, PageRequest.of(page, 10));
 	}
-	
-	
+
 	@GetMapping(value = "/api/author/page/{page}/search/{key}")
 	public Page<Author> search(@PathVariable("page") Integer page, @PathVariable("key") String key) {
 		page -= 1;
 		return authorRepository.findAllByAuthorNameContaining(key, PageRequest.of(page, 10));
 	}
-	
+
 	@GetMapping(value = "/api/author/page/{page}/search/{key}/sort/{by}")
-	public Page<Author> search(@PathVariable("page") Integer page, @PathVariable("key") String key, @PathVariable("by") String by) {
+	public Page<Author> search(@PathVariable("page") Integer page, @PathVariable("key") String key,
+			@PathVariable("by") String by) {
 		page -= 1;
 		return authorRepository.findAllByAuthorNameContaining(key, PageRequest.of(page, 10));
 	}
-	
+
 	@GetMapping(value = "/api/author/page/{page}/search/{key}/sort/{by}/{sort}")
-	public Page<Author> search(@PathVariable("page") Integer page, @PathVariable("key") String key, @PathVariable("by") String by, @PathVariable("sort") String sort) {
+	public Page<Author> search(@PathVariable("page") Integer page, @PathVariable("key") String key,
+			@PathVariable("by") String by, @PathVariable("sort") String sort) {
 		page -= 1;
-		
+
 		if (sort.equals("DESC") || sort.equals("desc") || sort.equals("true") || sort.equals("1")) {
-			return authorRepository.findAllByAuthorNameContaining(key, PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
+			return authorRepository.findAllByAuthorNameContaining(key,
+					PageRequest.of(page, 10, Sort.by(Direction.DESC, by)));
 		}
-		
+
 		return authorRepository.findAllByAuthorNameContaining(key, PageRequest.of(page, 10));
 	}
-	
+
 	@GetMapping(value = "/api/author/{authorID}")
 	public ResponseEntity<Optional<Author>> getByID(@PathVariable("authorID") Long authorID) {
 		return ResponseEntity.ok(authorRepository.findById(authorID));
 	}
-	
+
 	@PostMapping(value = "/api/author")
 	public ResponseEntity<Author> createRole(@Validated @RequestBody Author author, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return ResponseEntity.ok(null);
 		}
-		
+
 		return ResponseEntity.ok(authorRepository.save(author));
 	}
-	
+
 	@PutMapping(value = "/api/author")
 	public ResponseEntity<Author> updateRole(@Validated @RequestBody Author author, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return ResponseEntity.ok(null);
 		}
-		
+
 		return ResponseEntity.ok(authorRepository.save(author));
 	}
-	
+
 	@DeleteMapping(value = "/api/author/{authorID}")
 	public ResponseEntity<String> delete(@PathVariable("authorID") Long authorID) {
-		authorRepository.deleteById(authorID);
-		return ResponseEntity.ok("Deleted: " + authorID);
+		try {
+			if (authorRepository.getOne(authorID).getBookAuthors().isEmpty()) {
+				authorRepository.deleteById(authorID);
+				return ResponseEntity.ok("author.delete.success");
+			} else {
+				return ResponseEntity.ok("author.delete.using.book_author");
+			}
+		} catch (Exception e) {
+			return ResponseEntity.ok("author.delete.fail");
+		}
 	}
-	
+
 }

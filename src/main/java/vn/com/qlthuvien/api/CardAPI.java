@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.com.qlthuvien.model.Card;
+import vn.com.qlthuvien.model.Reader;
 import vn.com.qlthuvien.repository.CardRepository;
 
 @RestController
@@ -98,8 +99,28 @@ public class CardAPI {
 	
 	@DeleteMapping(value = "/api/card/{cardID}")
 	public ResponseEntity<String> delete(@PathVariable("cardID") Long cardID) {
-		cardRepository.deleteById(cardID);
-		return ResponseEntity.ok("Deleted: " + cardID);
+		try {
+			Reader reader = cardRepository.getOne(cardID).getReader();
+			boolean flagBill = cardRepository.getOne(cardID).getBills().isEmpty();
+			
+			if (flagBill && reader == null) {
+				cardRepository.deleteById(cardID);
+				return ResponseEntity.ok("card.delete.success");
+			} else {
+				String result = "card.delete.using";
+				if (reader != null) {
+					result += ".reader";
+				}
+				if (!flagBill) {
+					result += ".bill";
+				}
+				
+				return ResponseEntity.ok(result);
+			}
+			
+		} catch (Exception e) {
+			return ResponseEntity.ok("card.delete.fail");
+		}
 	}
 	
 }

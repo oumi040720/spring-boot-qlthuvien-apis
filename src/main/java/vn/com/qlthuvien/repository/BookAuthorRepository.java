@@ -11,6 +11,6 @@ import vn.com.qlthuvien.model.ClassID.BookAuthorID;
 @Repository
 public interface BookAuthorRepository extends JpaRepository<BookAuthor, BookAuthorID> {
 
-	Page<BookAuthor> findAllByStatusIs(Boolean status, Pageable pageable);
+	public Page<BookAuthor> findAllByStatusIs(Boolean status, Pageable pageable);
 	
 }

@@ -168,8 +168,31 @@ public class BookAPI {
 	
 	@DeleteMapping(value = "/api/book/{bookID}")
 	public ResponseEntity<String> delete(@PathVariable("bookID") Long bookID) {
-		bookRepository.deleteById(bookID);
-		return ResponseEntity.ok("Deleted: " + bookID);
+		try {
+			boolean flagBookAuthor = bookRepository.getOne(bookID).getBookAuthors().isEmpty();
+			boolean flagBookCategory =  bookRepository.getOne(bookID).getBookCategories().isEmpty();
+			boolean flagBillDetail = bookRepository.getOne(bookID).getBillDetails().isEmpty();
+			
+			if (flagBookAuthor && flagBookCategory && flagBillDetail) {
+				bookRepository.deleteById(bookID);
+				return ResponseEntity.ok("book.delete.success");
+			} else {
+				String result = "book.delete.using";
+				if (!flagBookAuthor) {
+					result += ".book_author";
+				}
+				if (!flagBookCategory) {
+					result += ".book_category";
+				}
+				if (!flagBillDetail) {
+					result += ".bill_detail";
+				}
+
+				return ResponseEntity.ok(result);
+			}
+		} catch (Exception e) {
+			return ResponseEntity.ok("book.delete.fail");
+		}
 	}
 	
 }

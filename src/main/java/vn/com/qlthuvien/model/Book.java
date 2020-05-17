@@ -70,7 +70,7 @@ public class Book {
 
 	@OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
 	private List<BookCategory> bookCategories;
-	
+
 	@OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
 	private List<BillDetail> billDetails;
 
@@ -160,6 +160,14 @@ public class Book {
 
 	public void setBookCategories(List<BookCategory> bookCategories) {
 		this.bookCategories = bookCategories;
+	}
+
+	public List<BillDetail> getBillDetails() {
+		return billDetails;
+	}
+
+	public void setBillDetails(List<BillDetail> billDetails) {
+		this.billDetails = billDetails;
 	}
 
 }

@@ -138,8 +138,12 @@ public class ReaderAPI {
 	
 	@DeleteMapping(value = "/api/reader/{readerID}")
 	public ResponseEntity<String> delete(@PathVariable("readerID") Long readerID) {
-		readerRepository.deleteById(readerID);
-		return ResponseEntity.ok("Deleted: " + readerID);
+		try {
+			readerRepository.deleteById(readerID);
+			return ResponseEntity.ok("reader.delete.success");
+		} catch (Exception e) {
+			return ResponseEntity.ok("reader.delete.fail");
+		}
 	}
 	
 }
